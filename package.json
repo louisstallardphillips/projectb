@@ -1,0 +1,25 @@
+{
+  "devDependencies": {
+    "@babel/preset-react": "^7.0.0",
+    "autoprefixer": "^9.6.1",
+    "node-sass": "^4.12.0",
+    "postcss-loader": "^3.0.0",
+    "sass-loader": "^8.0.0"
+  },
+  "dependencies": {
+    "prop-types": "^15.7.2",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0"
+  },
+  "browserslist": [
+    "cover 99.5%",
+    "last 2 versions",
+    "Firefox ESR",
+    "not ie",
+    "not dead"
+  ],
+  "name": "projectb",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT"
+}
