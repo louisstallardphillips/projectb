@@ -1,5 +1,9 @@
 {
   "devDependencies": {
+    "@symfony/webpack-encore": "^0.28.0",
+    "core-js": "^3.0.0",
+    "regenerator-runtime": "^0.13.2",
+    "webpack-notifier": "^1.6.0",
     "@babel/preset-react": "^7.0.0",
     "autoprefixer": "^9.6.1",
     "node-sass": "^4.12.0",
@@ -15,9 +19,16 @@
     "cover 99.5%",
     "last 2 versions",
     "Firefox ESR",
-    "not ie",
     "not dead"
   ],
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "dev-server": "encore dev-server",
+    "dev": "encore dev",
+    "watch": "encore dev --watch",
+    "build": "encore production --progress"
+  },
   "name": "projectb",
   "version": "1.0.0",
   "main": "index.js",
