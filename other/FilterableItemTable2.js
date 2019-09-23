@@ -1,75 +1,41 @@
-class ProductCategoryRow extends React.Component {
+class Item extends React.Component {
   render() {
-    const category = this.props.category;
+    const item = this.props.item;
+    const name = item.name;
+
     return (
-      <tr>
-        <th colSpan="2">
-          {category}
-        </th>
-      </tr>
+      <div>
+        <h3>{name}</h3>
+        <p>{item.price}</p>
+      </div>
     );
   }
 }
 
-class ProductRow extends React.Component {
-  render() {
-    const product = this.props.product;
-    const name = product.stocked ?
-      product.name :
-      <span style={{color: 'red'}}>
-        {product.name}
-      </span>;
-
-    return (
-      <tr>
-        <td>{name}</td>
-        <td>{product.price}</td>
-      </tr>
-    );
-  }
-}
-
-class ProductTable extends React.Component {
+class ItemTable extends React.Component {
   render() {
     const filterText = this.props.filterText;
-    const inStockOnly = this.props.inStockOnly;
+    const rating = this.props.rating;
 
     const rows = [];
-    let lastCategory = null;
 
-    this.props.products.forEach((product) => {
-      if (product.name.indexOf(filterText) === -1) {
+    this.props.items.forEach((item) => {
+      if (item.name.indexOf(filterText) === -1) {
         return;
       }
-      if (inStockOnly && !product.stocked) {
+      if (rating && !product.rating) {
         return;
-      }
-      if (product.category !== lastCategory) {
-        rows.push(
-          <ProductCategoryRow
-            category={product.category}
-            key={product.category} />
-        );
       }
       rows.push(
-        <ProductRow
-          product={product}
-          key={product.name}
+        <Item
+          item={item}
+          key={item.name}
         />
       );
-      lastCategory = product.category;
     });
 
     return (
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Price</th>
-          </tr>
-        </thead>
-        <tbody>{rows}</tbody>
-      </table>
+      <div>{rows}</div>
     );
   }
 }
@@ -78,16 +44,22 @@ class SearchBar extends React.Component {
   constructor(props) {
     super(props);
     this.handleFilterTextChange = this.handleFilterTextChange.bind(this);
-    this.handleInStockChange = this.handleInStockChange.bind(this);
+    this.sortByRatingChange = this.sortByRatingChange.bind(this);
   }
   
   handleFilterTextChange(e) {
     this.props.onFilterTextChange(e.target.value);
   }
   
-  handleInStockChange(e) {
-    this.props.onInStockChange(e.target.checked);
+  sortByRatingChange(e) {
+    this.props.onRatingChange(e.target.checked);
   }
+
+  // sortByRatingChange = (e) => {
+  //   const { rating } = this.state;
+  //   rating.sort((a, b) => a - b).reverse()
+  //   this.setState({ rating })
+  // }
   
   render() {
     return (
@@ -101,27 +73,27 @@ class SearchBar extends React.Component {
         <p>
           <input
             type="checkbox"
-            checked={this.props.inStockOnly}
-            onChange={this.handleInStockChange}
+            checked={this.props.rating}
+            onChange={this.sortByRatingChange}
           />
           {' '}
-          Only show products in stock
+          Sort by Rating
         </p>
       </form>
     );
   }
 }
 
-class FilterableProductTable extends React.Component {
+class FilterableItemTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       filterText: '',
-      inStockOnly: false
+      rating: false
     };
     
     this.handleFilterTextChange = this.handleFilterTextChange.bind(this);
-    this.handleInStockChange = this.handleInStockChange.bind(this);
+    this.sortByRatingChange = this.sortByRatingChange.bind(this);
   }
 
   handleFilterTextChange(filterText) {
@@ -130,9 +102,9 @@ class FilterableProductTable extends React.Component {
     });
   }
   
-  handleInStockChange(inStockOnly) {
+  sortByRatingChange(rating) {
     this.setState({
-      inStockOnly: inStockOnly
+      rating: rating
     })
   }
 
@@ -141,14 +113,14 @@ class FilterableProductTable extends React.Component {
       <div>
         <SearchBar
           filterText={this.state.filterText}
-          inStockOnly={this.state.inStockOnly}
+          rating={this.state.rating}
           onFilterTextChange={this.handleFilterTextChange}
-          onInStockChange={this.handleInStockChange}
+          onRatingChange={this.sortByRatingChange}
         />
-        <ProductTable
-          products={this.props.products}
+        <ItemTable
+          items={this.props.items}
           filterText={this.state.filterText}
-          inStockOnly={this.state.inStockOnly}
+          rating={this.state.rating}
         />
       </div>
     );
@@ -156,16 +128,16 @@ class FilterableProductTable extends React.Component {
 }
 
 
-const PRODUCTS = [
-  {category: 'Sporting Goods', price: '$49.99', stocked: true, name: 'Football'},
-  {category: 'Sporting Goods', price: '$9.99', stocked: true, name: 'Baseball'},
-  {category: 'Sporting Goods', price: '$29.99', stocked: false, name: 'Basketball'},
-  {category: 'Electronics', price: '$99.99', stocked: true, name: 'iPod Touch'},
-  {category: 'Electronics', price: '$399.99', stocked: false, name: 'iPhone 5'},
-  {category: 'Electronics', price: '$199.99', stocked: true, name: 'Nexus 7'}
+const ITEMS = [
+  {category: 'Sporting Goods', price: '$49.99', rating: true, ratingb: 3.26, name: 'Football'},
+  {category: 'Sporting Goods', price: '$9.99', rating: true, ratingb: 3.35, name: 'Baseball'},
+  {category: 'Sporting Goods', price: '$29.99', rating: false, ratingb: 4.12, name: 'Basketball'},
+  {category: 'Electronics', price: '$99.99', rating: false, ratingb: 3.56, name: 'iPod Touch'},
+  {category: 'Electronics', price: '$399.99', rating: true, ratingb: 4.20, name: 'iPhone 5'},
+  {category: 'Electronics', price: '$199.99', rating: true, ratingb: 3.69, name: 'Nexus 7'}
 ];
 
 ReactDOM.render(
-  <FilterableProductTable products={PRODUCTS} />,
+  <FilterableItemTable items={ITEMS} />,
   document.getElementById('container')
 );
