@@ -1,0 +1,4 @@
+FilterableItemTable: contains the entirety of the section
+    FilterBar: receives all user input
+    ItemTable: displays and filters the data collection based on user input
+        Item: displays a box for each item
